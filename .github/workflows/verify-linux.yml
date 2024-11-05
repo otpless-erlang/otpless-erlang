@@ -1,0 +1,30 @@
+#
+# A workflow to verify OTPless Erlang builds for the Linux platform
+# successfully.
+#
+name: Verify Linux
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Get files
+      uses: actions/checkout@v4
+      with:
+        path: source
+
+    - name: Build project
+      run: |
+        cmake -S source -B build
+        cmake --build build --config Release
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-linux
+        path: build/
