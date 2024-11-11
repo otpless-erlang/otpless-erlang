@@ -43,7 +43,10 @@ jobs:
   build-alpine:
     strategy:
       matrix:
-        arch: ['amd64', 'arm64']
+        # XXX: Builds for ARM64 was disabled because JavaScript actions are
+        #      not supported on Alpine/ARM64.
+        # arch: ['amd64', 'arm64']
+        arch: ['amd64']
 
     runs-on: linux-${{ matrix.arch }}
     container:
