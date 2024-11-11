@@ -10,7 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    strategy:
+      matrix:
+        arch: ['amd64', 'arm64']
+
+    runs-on: windows-${{ matrix.arch }}
 
     steps:
     - name: Get files
@@ -26,7 +30,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-windows
+        name: otpless-erlang-windows-${{ matrix.arch }}
         path: build/
 
   build-with-msys2:
