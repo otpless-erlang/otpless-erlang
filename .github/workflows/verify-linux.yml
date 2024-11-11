@@ -9,14 +9,21 @@ on:
     branches: [master]
 
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  build-debian:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12
 
     steps:
     - name: Get files
       uses: actions/checkout@v4
       with:
         path: source
+
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get install -y build-essential cmake
 
     - name: Build project
       run: |
@@ -26,5 +33,30 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-linux
+        name: otpless-erlang-debian
+        path: build/
+
+  build-alpine:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3
+
+    steps:
+    - name: Get files
+      uses: actions/checkout@v4
+      with:
+        path: source
+
+    - name: Install dependencies
+      run: apk add --no-cache build-base cmake
+
+    - name: Build project
+      run: |
+        cmake -S source -B build
+        cmake --build build --config Release
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-alpine
         path: build/
