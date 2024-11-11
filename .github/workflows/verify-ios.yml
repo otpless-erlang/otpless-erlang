@@ -1,0 +1,38 @@
+#
+# A workflow to verify OTPless Erlang builds for the iOS platform successfully.
+#
+# XXX: Investigate the values of the CMAKE_OSX_ARCHITECTURES and
+#      CMAKE_OSX_DEPLOYMENT_TARGET variables.
+#
+name: Verify iOS
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+    - name: Get files
+      uses: actions/checkout@v4
+      with:
+        path: source
+
+    - name: Build project
+      run: |
+        cmake \
+          -S source \
+          -B build \
+          -GXcode \
+          -DCMAKE_SYSTEM_NAME=iOS \
+          "-DCMAKE_OSX_ARCHITECTURES=arm64" \
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0
+        cmake --build build --config Release
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-ios
+        path: build/
