@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: macos-14
+    strategy:
+        matrix:
+          target: [device, simulator]
 
     steps:
     - name: Get files
@@ -28,11 +31,17 @@ jobs:
           -GXcode \
           -DCMAKE_SYSTEM_NAME=iOS \
           "-DCMAKE_OSX_ARCHITECTURES=arm64" \
-          -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0
-        cmake --build build --config Release
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0 \
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED=NO \
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+        if [ "${{ matrix.target }}" == "device" ]; then
+          cmake --build build --config Release -- -sdk iphoneos
+        else
+          cmake --build build --config Release -- -sdk iphonesimulator
+        fi
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-ios
+        name: otpless-erlang-ios-${{ matrix.target }}
         path: build/
