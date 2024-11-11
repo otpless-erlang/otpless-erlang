@@ -2,6 +2,15 @@
 # A workflow to verify OTPless Erlang builds for the Android platform
 # successfully.
 #
+# - First class platform to cross-compile for Android is Linux, but we also
+#   want to make sure it cross-compiles fine on macOS and Windows.
+#
+# - We do not want to test the various API levels (as the range is large) and
+#   instead we define a lowest and highest API level.
+#
+# - To reduce the build matrix, on macOS and Windows, we only test with the
+#   "preffered" ABI and STL and with the highest API level.
+#
 name: Verify Android
 
 on:
@@ -41,3 +50,47 @@ jobs:
       with:
         name: otpless-erlang-android-${{ matrix.api-level }}-${{ matrix.abi }}
         path: build/
+
+  build-from-macos:
+    runs-on: macos-14
+
+    steps:
+    - name: Get files
+      uses: actions/checkout@v4
+      with:
+        path: source
+
+    - name: Build project
+      run: |
+        cmake \
+          -S source \
+          -B build \
+          -DCMAKE_SYSTEM_NAME=Android \
+          -DCMAKE_SYSTEM_VERSION=34 \
+          -DCMAKE_ANDROID_NDK=$ANDROID_NDK \
+          -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a \
+          -DCMAKE_ANDROID_STL_TYPE=c++_shared
+        cmake --build build --config Release
+
+  build-from-windows:
+    runs-on: windows-2022
+
+    steps:
+    - name: Get files
+      uses: actions/checkout@v4
+      with:
+        path: source
+
+    - name: Build project
+      shell: pwsh
+      run: |
+        $env:ANDROID_NDK = $env:ANDROID_NDK -replace '\\', '/'
+        cmake `
+          -S source `
+          -B build `
+          -DCMAKE_SYSTEM_NAME=Android `
+          -DCMAKE_SYSTEM_VERSION=34 `
+          -DCMAKE_ANDROID_NDK="$env:ANDROID_NDK" `
+          -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a `
+          -DCMAKE_ANDROID_STL_TYPE=c++_shared
+        cmake --build build --config Release
