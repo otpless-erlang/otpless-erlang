@@ -72,25 +72,27 @@ jobs:
           -DCMAKE_ANDROID_STL_TYPE=c++_shared
         cmake --build build --config Release
 
-  build-from-windows:
-    runs-on: windows-2022
+  # XXX: Disabled because CMakes "is not able to compile a simple test
+  #      program."
+  # build-from-windows:
+  #   runs-on: windows-2022
 
-    steps:
-    - name: Get files
-      uses: actions/checkout@v4
-      with:
-        path: source
+  #   steps:
+  #   - name: Get files
+  #     uses: actions/checkout@v4
+  #     with:
+  #       path: source
 
-    - name: Build project
-      shell: pwsh
-      run: |
-        $env:ANDROID_NDK = $env:ANDROID_NDK -replace '\\', '/'
-        cmake `
-          -S source `
-          -B build `
-          -DCMAKE_SYSTEM_NAME=Android `
-          -DCMAKE_SYSTEM_VERSION=34 `
-          -DCMAKE_ANDROID_NDK="$env:ANDROID_NDK" `
-          -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a `
-          -DCMAKE_ANDROID_STL_TYPE=c++_shared
-        cmake --build build --config Release
+  #   - name: Build project
+  #     shell: pwsh
+  #     run: |
+  #       $env:ANDROID_NDK = $env:ANDROID_NDK -replace '\\', '/'
+  #       cmake `
+  #         -S source `
+  #         -B build `
+  #         -DCMAKE_SYSTEM_NAME=Android `
+  #         -DCMAKE_SYSTEM_VERSION=34 `
+  #         -DCMAKE_ANDROID_NDK="$env:ANDROID_NDK" `
+  #         -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a `
+  #         -DCMAKE_ANDROID_STL_TYPE=c++_shared
+  #       cmake --build build --config Release
