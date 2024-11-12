@@ -66,6 +66,20 @@ set(ERLANG_BUILD_FLAVOR "jit"
   STRING "The build flavor (either 'emu' or 'jit'). It should be JIT by default unless not supported by the platform."
 )
 
+# Generate the 'erl_int_sizes_config.h' file (from its .h.in template).
+include(CheckTypeSize)
+check_type_size("char" SIZEOF_CHAR)
+check_type_size("short" SIZEOF_SHORT)
+check_type_size("int" SIZEOF_INT)
+check_type_size("long" SIZEOF_LONG)
+check_type_size("long long" SIZEOF_LONG_LONG)
+check_type_size("void*" SIZEOF_VOID_P)
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/erts/include/erl_int_sizes_config.h.in
+  ${CMAKE_BINARY_DIR}/erts/include/erl_int_sizes_config.h
+)
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
