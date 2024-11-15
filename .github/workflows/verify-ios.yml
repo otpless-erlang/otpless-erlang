@@ -1,6 +1,9 @@
 #
 # A workflow to verify OTPless Erlang builds for the iOS platform successfully.
 #
+# Support for iOS (from macOS) is primary and therefore we test with all the
+# targets.
+#
 # XXX: Investigate the values of the CMAKE_OSX_ARCHITECTURES and
 #      CMAKE_OSX_DEPLOYMENT_TARGET variables.
 #

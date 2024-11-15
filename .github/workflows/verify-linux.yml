@@ -2,6 +2,9 @@
 # A workflow to verify OTPless Erlang builds for the Linux platform
 # successfully.
 #
+# Support for Linux (Debian and Alpine) is primary and therefore we test with
+# all the architectures.
+#
 name: Verify Linux
 
 on:

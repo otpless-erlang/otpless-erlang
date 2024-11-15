@@ -2,6 +2,9 @@
 # A workflow to verify OTPless Erlang builds for the Android platform
 # successfully.
 #
+# Support for Android from Linux is primary and therefore we test with all the
+# architectures, STL and API levels we support.
+#
 name: Verify Android
 
 on:

@@ -2,6 +2,8 @@
 # A workflow to verify OTPless Erlang builds for the macOS platform
 # successfully.
 #
+# Support for macOS is primary.
+#
 name: Verify macOS
 
 on:

@@ -2,6 +2,10 @@
 # A workflow to verify OTPless Erlang builds for the Windows platform
 # successfully.
 #
+# Support for Windows is primary.
+#
+# XXX: Builds for ARM64 was disabled because no image with the compilation
+#      tools are provided by Github.
 name: Verify Windows
 
 on:
@@ -10,8 +14,6 @@ on:
 
 jobs:
   build:
-    # XXX: Builds for ARM64 was disabled because no image with the compilation
-    #      tools are provided by Github.
     # strategy:
     #   matrix:
     #     arch: ['amd64', 'arm64']

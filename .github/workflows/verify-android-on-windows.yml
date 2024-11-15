@@ -2,6 +2,10 @@
 # A workflow to verify OTPless Erlang builds for the Android platform on
 # Windows successfully.
 #
+# Support for Android from Windows is secondary and therefore we only test with
+# the default architecture (arm64-v8a) using default STL (c++_shared) and API
+# level (34).
+#
 name: Verify Android (on Windows)
 
 on:

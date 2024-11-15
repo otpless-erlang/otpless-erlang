@@ -2,6 +2,8 @@
 # A workflow to verify OTPless Erlang builds for the Windows platform from a
 # MSYS2 environment successfully.
 #
+# Support for Windows from MSYS2 is secondary.
+#
 name: Verify Windows (from MSYS2)
 
 on:

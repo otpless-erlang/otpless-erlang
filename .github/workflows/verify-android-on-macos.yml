@@ -2,6 +2,10 @@
 # A workflow to verify OTPless Erlang builds for the Android platform on macOS
 # successfully.
 #
+# Support for Android from macOS is secondary and therefore we only test with
+# the default architecture (arm64-v8a) using default STL (c++_shared) and API
+# level (34).
+#
 name: Verify Android (on macOS)
 
 on:
