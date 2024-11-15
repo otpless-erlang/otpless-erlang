@@ -85,7 +85,7 @@ jobs:
         path: source
 
     - name: Install dependencies
-      run: apk add --no-cache build-base cmake
+      run: apk add --no-cache build-base cmake perl
 
     - name: Build project
       run: |
