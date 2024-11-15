@@ -8,6 +8,18 @@ project(
   LANGUAGES C
 )
 
+set(ERLANG_BUILD_TYPE "release"
+  CACHE
+  STRING "The build type (either 'release' or 'debug')."
+)
+if(ERLANG_BUILD_TYPE STREQUAL "release")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+elseif(ERLANG_BUILD_TYPE STREQUAL "debug")
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE)
+else()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+endif()
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
