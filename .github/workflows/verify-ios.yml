@@ -7,6 +7,8 @@
 # XXX: Investigate the values of the CMAKE_OSX_ARCHITECTURES and
 #      CMAKE_OSX_DEPLOYMENT_TARGET variables.
 #
+# No debug builds for iOS.
+#
 name: Verify iOS
 
 on:

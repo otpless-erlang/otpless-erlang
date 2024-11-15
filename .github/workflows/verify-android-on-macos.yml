@@ -6,6 +6,8 @@
 # the default architecture (arm64-v8a) using default STL (c++_shared) and API
 # level (34).
 #
+# No debug builds for Android.
+#
 name: Verify Android (on macOS)
 
 on:

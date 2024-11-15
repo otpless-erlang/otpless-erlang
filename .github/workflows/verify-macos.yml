@@ -31,3 +31,15 @@ jobs:
       with:
         name: otpless-erlang-macos
         path: install/
+
+    - name: Build project (debug)
+      run: |
+        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug
+        cmake --build build-debug
+        cmake --install build-debug --prefix install-debug
+
+    - name: Upload artifact (debug)
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-macos-debug
+        path: install-debug/

@@ -40,3 +40,16 @@ jobs:
       with:
         name: otpless-erlang-windows-msys2
         path: install/
+
+    - name: Build project (debug)
+      shell: msys2 {0}
+      run: |
+        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug
+        cmake --build build-debug
+        cmake --install build-debug --prefix install-debug
+
+    - name: Upload artifact (debug)
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-windows-msys2-debug
+        path: install-debug/

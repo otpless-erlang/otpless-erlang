@@ -5,6 +5,8 @@
 # Support for Android from Linux is primary and therefore we test with all the
 # architectures, STL and API levels we support.
 #
+# No debug builds for Android.
+#
 name: Verify Android
 
 on:

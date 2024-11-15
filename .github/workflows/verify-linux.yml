@@ -5,6 +5,9 @@
 # Support for Linux (Debian and Alpine) is primary and therefore we test with
 # all the architectures.
 #
+# No debug builds on Alpine to reduce the matrix size (because if it works on
+# Debian, it will high likely works on Alpine).
+#
 name: Verify Linux
 
 on:
@@ -43,6 +46,23 @@ jobs:
       with:
         name: otpless-erlang-debian-${{ matrix.arch }}
         path: install/
+
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get install -y build-essential cmake
+
+    - name: Build project (debug)
+      run: |
+        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug
+        cmake --build build-debug
+        cmake --install build-debug --prefix install-debug
+
+    - name: Upload artifact (debug)
+      uses: actions/upload-artifact@v4
+      with:
+        name: otpless-erlang-debian-${{ matrix.arch }}-debug
+        path: install-debug/
 
   build-alpine:
     strategy:
