@@ -36,7 +36,7 @@ jobs:
           -DCMAKE_ANDROID_NDK=$ANDROID_NDK \
           -DCMAKE_ANDROID_ARCH_ABI=${{ matrix.abi }} \
           -DCMAKE_ANDROID_STL_TYPE=${{ matrix.stl }}
-        cmake --build build --config Release
+        cmake --build build
         cmake --install build --prefix install
 
     - name: Upload artifact

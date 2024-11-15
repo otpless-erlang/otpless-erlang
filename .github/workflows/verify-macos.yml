@@ -23,7 +23,7 @@ jobs:
     - name: Build project
       run: |
         cmake -S source -B build
-        cmake --build build --config Release
+        cmake --build build
         cmake --install build --prefix install
 
     - name: Upload artifact
