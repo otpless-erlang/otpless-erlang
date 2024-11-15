@@ -42,9 +42,9 @@ jobs:
           -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO \
           -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         if [ "${{ matrix.target }}" == "device" ]; then
-          cmake --build build --config Release -- -sdk iphoneos
+          cmake --build build --config Release --verbose -- -sdk iphoneos
         else
-          cmake --build build --config Release -- -sdk iphonesimulator
+          cmake --build build --config Release --verbose -- -sdk iphonesimulator
         fi
         cmake --install build --prefix install
 

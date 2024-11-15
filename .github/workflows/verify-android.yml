@@ -40,7 +40,7 @@ jobs:
           -DCMAKE_ANDROID_ARCH_ABI=${{ matrix.abi }} \
           -DCMAKE_ANDROID_STL_TYPE=${{ matrix.stl }} \
           -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
-        cmake --build build
+        cmake --build build --verbose
         cmake --install build --prefix install
 
     - name: Upload artifact

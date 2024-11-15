@@ -35,8 +35,8 @@ jobs:
           -B build `
           -A ${{ matrix.arch }} `
           -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
-        cmake --build build --config Release
-        cmake --build build --config Debug
+        cmake --build build --config Release --verbose
+        cmake --build build --config Debug --verbose
         cmake --install build --prefix install
 
     - name: Upload artifact

@@ -39,7 +39,7 @@ jobs:
     - name: Build project
       run: |
         cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
-        cmake --build build
+        cmake --build build --verbose
         cmake --install build --prefix install
 
     - name: Upload artifact
@@ -56,7 +56,7 @@ jobs:
     - name: Build project (debug)
       run: |
         cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
-        cmake --build build-debug
+        cmake --build build-debug --verbose
         cmake --install build-debug --prefix install-debug
 
     - name: Upload artifact (debug)
@@ -90,7 +90,7 @@ jobs:
     - name: Build project
       run: |
         cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
-        cmake --build build
+        cmake --build build --verbose
         cmake --install build --prefix install
 
     - name: Upload artifact
