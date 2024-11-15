@@ -23,7 +23,7 @@ jobs:
 
     runs-on: linux-${{ matrix.arch }}
     container:
-      image: debian:12
+      image: debian:12-slim
 
     steps:
     - name: Get files
