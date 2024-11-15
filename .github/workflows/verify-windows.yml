@@ -15,13 +15,13 @@ on:
 
 jobs:
   build:
-    # strategy:
-    #   matrix:
-    #     arch: ['amd64', 'arm64']
-    # runs-on: windows-${{ matrix.arch }}
     strategy:
       matrix:
+        # arch: ['amd64', 'arm64']
         arch: ['amd64']
+        flavor: ['emu', 'jit']
+
+    # runs-on: windows-${{ matrix.arch }}
     runs-on: windows-2022
 
     steps:
@@ -32,7 +32,7 @@ jobs:
 
     - name: Build project
       run: |
-        cmake -S source -B build
+        cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build --config Release
         cmake --build build --config Debug
         cmake --install build --prefix install
@@ -40,5 +40,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-windows-${{ matrix.arch }}
+        name: otpless-erlang-${{ matrix.flavor }}-windows-${{ matrix.arch }}
         path: install/

@@ -12,6 +12,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        flavor: ['emu', 'jit']
+
     runs-on: macos-14
 
     steps:
@@ -22,24 +26,24 @@ jobs:
 
     - name: Build project
       run: |
-        cmake -S source -B build
+        cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build
         cmake --install build --prefix install
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-macos
+        name: otpless-erlang-${{ matrix.flavor }}-macos
         path: install/
 
     - name: Build project (debug)
       run: |
-        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug
+        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build-debug
         cmake --install build-debug --prefix install-debug
 
     - name: Upload artifact (debug)
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-macos-debug
+        name: otpless-erlang-${{ matrix.flavor }}-macos-debug
         path: install-debug/

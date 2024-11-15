@@ -20,6 +20,7 @@ jobs:
     runs-on: macos-14
     strategy:
         matrix:
+          flavor: ['emu', 'jit']
           target: [device, simulator]
 
     steps:
@@ -38,7 +39,8 @@ jobs:
           "-DCMAKE_OSX_ARCHITECTURES=arm64" \
           -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0 \
           -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED=NO \
-          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO \
+          -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         if [ "${{ matrix.target }}" == "device" ]; then
           cmake --build build --config Release -- -sdk iphoneos
         else
@@ -49,5 +51,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-ios-${{ matrix.target }}
+        name: otpless-erlang-${{ matrix.flavor }}-ios-${{ matrix.target }}
         path: install/

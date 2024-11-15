@@ -12,6 +12,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        flavor: ['emu', 'jit']
+
     runs-on: windows-2022
 
     steps:
@@ -31,25 +35,25 @@ jobs:
     - name: Build project
       shell: msys2 {0}
       run: |
-        cmake -S source -B build
+        cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build
         cmake --install build --prefix install
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-windows-msys2
+        name: otpless-erlang-${{ matrix.flavor }}-windows-msys2
         path: install/
 
     - name: Build project (debug)
       shell: msys2 {0}
       run: |
-        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug
+        cmake -S source -B build-debug -DERLANG_BUILD_TYPE=debug -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build-debug
         cmake --install build-debug --prefix install-debug
 
     - name: Upload artifact (debug)
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-windows-msys2-debug
+        name: otpless-erlang-${{ matrix.flavor }}-windows-msys2-debug
         path: install-debug/

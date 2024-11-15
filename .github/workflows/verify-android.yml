@@ -21,6 +21,7 @@ jobs:
           api-level: [21, 34]
           abi: [arm64-v8a, x86_64]
           stl: [c++_shared, c++_static]
+          flavor: ['emu', 'jit']
 
     steps:
     - name: Get files
@@ -37,7 +38,8 @@ jobs:
           -DCMAKE_SYSTEM_VERSION=${{ matrix.api-level }} \
           -DCMAKE_ANDROID_NDK=$ANDROID_NDK \
           -DCMAKE_ANDROID_ARCH_ABI=${{ matrix.abi }} \
-          -DCMAKE_ANDROID_STL_TYPE=${{ matrix.stl }}
+          -DCMAKE_ANDROID_STL_TYPE=${{ matrix.stl }} \
+          -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build
         cmake --install build --prefix install
 
@@ -45,5 +47,5 @@ jobs:
       if: matrix.stl == 'c++_shared'
       uses: actions/upload-artifact@v4
       with:
-        name: otpless-erlang-android-${{ matrix.api-level }}-${{ matrix.abi }}
+        name: otpless-erlang-${{ matrix.flavor }}-android-${{ matrix.api-level }}-${{ matrix.abi }}
         path: install/
