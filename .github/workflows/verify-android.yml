@@ -37,10 +37,11 @@ jobs:
           -DCMAKE_ANDROID_ARCH_ABI=${{ matrix.abi }} \
           -DCMAKE_ANDROID_STL_TYPE=${{ matrix.stl }}
         cmake --build build --config Release
+        cmake --install build --prefix install
 
     - name: Upload artifact
       if: matrix.stl == 'c++_shared'
       uses: actions/upload-artifact@v4
       with:
         name: otpless-erlang-android-${{ matrix.api-level }}-${{ matrix.abi }}
-        path: build/
+        path: install/

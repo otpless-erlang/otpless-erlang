@@ -6,6 +6,7 @@
 #
 # XXX: Builds for ARM64 was disabled because no image with the compilation
 #      tools are provided by Github.
+#
 name: Verify Windows
 
 on:
@@ -33,9 +34,10 @@ jobs:
       run: |
         cmake -S source -B build
         cmake --build build --config Release
+        cmake --install build --prefix install
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: otpless-erlang-windows-${{ matrix.arch }}
-        path: build/
+        path: install/

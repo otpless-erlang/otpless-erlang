@@ -36,12 +36,13 @@ jobs:
       run: |
         cmake -S source -B build
         cmake --build build --config Release
+        cmake --install build --prefix install
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: otpless-erlang-debian-${{ matrix.arch }}
-        path: build/
+        path: install/
 
   build-alpine:
     strategy:
@@ -68,9 +69,10 @@ jobs:
       run: |
         cmake -S source -B build
         cmake --build build --config Release
+        cmake --install build --prefix install
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: otpless-erlang-alpine-${{ matrix.arch }}
-        path: build/
+        path: install/
