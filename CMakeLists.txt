@@ -70,6 +70,44 @@ set(ERLANG_BUILD_FLAVOR "jit"
   STRING "The build flavor (either 'emu' or 'jit'). It should be JIT by default unless not supported by the platform."
 )
 
+# Determine the target architcture (either 'x86' or 'arm').
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    set(ERLANG_TARGET_ARCH "x86")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    set(ERLANG_TARGET_ARCH "arm")
+  endif()
+elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  # We imply ARM64.
+  set(ERLANG_TARGET_ARCH "arm")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  # We rely on CMAKE_GENERATOR_PLATFORM instead of CMAKE_SYSTEM_PROCESSOR
+  # because CMake is improperly setting this value. (When cross-compiling for
+  # Windows ARM64, the value is AMD64).
+  if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
+    set(ERLANG_TARGET_ARCH "x86")
+  elseif(CMAKE_GENERATOR_PLATFORM MATCHES "ARM64")
+    set(ERLANG_TARGET_ARCH "arm")
+  endif()
+elseif(CMAKE_SYSTEM_NAME MATCHES "Android")
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    set(ERLANG_TARGET_ARCH "x86")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    set(ERLANG_TARGET_ARCH "arm")
+  endif()
+elseif(CMAKE_SYSTEM_NAME MATCHES "iOS")
+  # We imply ARM64. Note that the CMAKE_SYSTEM_PROCESSOR variable is not even
+  # set.
+  set(ERLANG_TARGET_ARCH "arm")
+endif()
+if (ERLANG_TARGET_ARCH STREQUAL "x86")
+  message(STATUS "Erlang will be compiled for an x86-based system")
+elseif (ERLANG_TARGET_ARCH STREQUAL "arm")
+  message(STATUS "Erlang will be compiled for an ARM-based system")
+else()
+  message(FATAL_ERROR "The target architecture could not be determined")
+endif()
+
 # Generate the 'erl_int_sizes_config.h' file (from its .h.in template).
 include(CheckTypeSize)
 check_type_size("char" SIZEOF_CHAR)
