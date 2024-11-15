@@ -20,6 +20,11 @@ else()
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 endif()
 
+set(ERLANG_BUILD_FLAVOR "jit"
+  CACHE
+  STRING "The build flavor (either 'emu' or 'jit'). It should be JIT by default unless not supported by the platform."
+)
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
