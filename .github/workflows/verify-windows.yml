@@ -37,32 +37,3 @@ jobs:
       with:
         name: otpless-erlang-windows-${{ matrix.arch }}
         path: build/
-
-  build-with-msys2:
-    runs-on: windows-2022
-
-    steps:
-    - name: Get files
-      uses: actions/checkout@v4
-      with:
-        path: source
-
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: UCRT64
-        install: >-
-          gcc
-          make
-          cmake
-
-    - name: Build project
-      shell: msys2 {0}
-      run: |
-        cmake -S source -B build
-        cmake --build build --config Release
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: otpless-erlang-windows-msys2
-        path: build/
