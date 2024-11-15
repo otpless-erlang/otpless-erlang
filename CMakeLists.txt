@@ -122,6 +122,57 @@ configure_file(
   ${CMAKE_BINARY_DIR}/erts/include/erl_int_sizes_config.h
 )
 
+# Define the 'beam_makeops' target which invokes the 'beam_makeops' Perl script
+# to generate *.h and *.c files from *.tab files.
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/emulator)
+set(OPCODE_TABLES
+  ${CMAKE_SOURCE_DIR}/lib/compiler/src/genop.tab
+  ${CMAKE_SOURCE_DIR}/erts/emulator/beam/predicates.tab
+  ${CMAKE_SOURCE_DIR}/erts/emulator/beam/generators.tab
+)
+if (ERLANG_BUILD_FLAVOR STREQUAL "jit")
+  list(APPEND OPCODE_TABLES
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/jit/${ERLANG_TARGET_ARCH}/ops.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/jit/${ERLANG_TARGET_ARCH}/predicates.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/jit/${ERLANG_TARGET_ARCH}/generators.tab
+  )
+elseif (ERLANG_BUILD_FLAVOR STREQUAL "emu")
+  list(APPEND OPCODE_TABLES
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/ops.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/predicates.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/generators.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/macros.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/arith_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/bif_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/bs_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/float_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/map_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/msg_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/select_instrs.tab
+    ${CMAKE_SOURCE_DIR}/erts/emulator/beam/emu/trace_instrs.tab
+  )
+endif()
+if (ERLANG_BUILD_FLAVOR STREQUAL "jit")
+  set(IS_USING_JIT yes)
+else()
+  set(IS_USING_JIT no)
+endif()
+set(BEAM_MAKEOPTS_ARGS
+  -wordsize 64
+  -code-model @CODE_MODEL@
+  -outdir ${CMAKE_BINARY_DIR}/emulator
+  -jit ${IS_USING_JIT}
+  -DUSE_VM_PROBES=0
+  -emulator ${OPCODE_TABLES}
+)
+add_custom_command(
+  OUTPUT beam_makeops.txt
+  COMMAND perl erts/emulator/utils/beam_makeops ${BEAM_MAKEOPTS_ARGS}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_custom_target(beam_makeops ALL DEPENDS beam_makeops.txt)
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
