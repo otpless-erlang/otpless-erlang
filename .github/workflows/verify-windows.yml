@@ -17,11 +17,9 @@ jobs:
   build:
     strategy:
       matrix:
-        # arch: ['amd64', 'arm64']
-        arch: ['amd64']
+        arch: ['x64', 'ARM64']
         flavor: ['emu', 'jit']
 
-    # runs-on: windows-${{ matrix.arch }}
     runs-on: windows-2022
 
     steps:
@@ -32,7 +30,11 @@ jobs:
 
     - name: Build project
       run: |
-        cmake -S source -B build -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
+        cmake `
+          -S source `
+          -B build `
+          -A ${{ matrix.arch }} `
+          -DERLANG_BUILD_FLAVOR=${{ matrix.flavor }}
         cmake --build build --config Release
         cmake --build build --config Debug
         cmake --install build --prefix install
