@@ -8,6 +8,10 @@ project(
   LANGUAGES C
 )
 
+# Find the Perl interpreter (the build process generates some C source files
+# using Perl scripts).
+find_package(Perl REQUIRED)
+
 # Print out some CMake variables for debugging/development purposes.
 
 message(STATUS "CMAKE_CROSSCOMPILING = ${CMAKE_CROSSCOMPILING}")
