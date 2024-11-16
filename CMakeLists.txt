@@ -251,6 +251,21 @@ add_custom_command(
 )
 add_custom_target(beam_makeops ALL DEPENDS beam_makeops.txt)
 
+# Define the 'liberts_internal' target that compiles the liberts_internal
+# library.
+set(LIBERTS_INTERNAL_SRC
+  ${CMAKE_SOURCE_DIR}/erts/lib_src/common/erl_printf_format.c
+  ${CMAKE_SOURCE_DIR}/erts/lib_src/common/erl_printf.c
+  ${CMAKE_SOURCE_DIR}/erts/lib_src/common/erl_misc_utils.c
+)
+add_library(erts_internal STATIC ${LIBERTS_INTERNAL_SRC})
+target_compile_definitions(erts_internal PRIVATE HAVE_CONFIG_H)
+target_include_directories(erts_internal PRIVATE
+  ${CMAKE_BINARY_DIR}/erts/
+  ${CMAKE_BINARY_DIR}/erts/include/
+  ${CMAKE_SOURCE_DIR}/erts/include/internal
+)
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
