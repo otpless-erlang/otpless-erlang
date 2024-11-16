@@ -24,6 +24,9 @@ jobs:
       with:
         path: source
 
+    - name: Install ninja
+      run: choco install ninja
+
     - name: Build project
       shell: pwsh
       run: |
@@ -31,6 +34,7 @@ jobs:
         cmake `
           -S source `
           -B build `
+          -G "Ninja" `
           -DCMAKE_SYSTEM_NAME=Android `
           -DCMAKE_SYSTEM_VERSION=34 `
           -DCMAKE_ANDROID_NDK="$env:ANDROID_NDK" `

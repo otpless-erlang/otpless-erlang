@@ -29,11 +29,15 @@ jobs:
       with:
         path: source
 
+    - name: Install ninja
+      run: sudo apt-get install -y ninja-build
+
     - name: Build project
       run: |
         cmake \
           -S source \
           -B build \
+          -G "Ninja" \
           -DCMAKE_SYSTEM_NAME=Android \
           -DCMAKE_SYSTEM_VERSION=${{ matrix.api-level }} \
           -DCMAKE_ANDROID_NDK=$ANDROID_NDK \
