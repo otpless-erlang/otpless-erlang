@@ -287,6 +287,12 @@ target_include_directories(erts_internal PRIVATE
   ${CMAKE_SOURCE_DIR}/erts/include/internal
 )
 
+# Define the 'ryu' target that produces libryu.a library.
+set(LIBRYU_SRC
+  erts/emulator/ryu/d2s.c
+)
+add_library(ryu STATIC ${LIBRYU_SRC})
+
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(erlang PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
