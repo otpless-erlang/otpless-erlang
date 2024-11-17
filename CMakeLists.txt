@@ -125,6 +125,8 @@ configure_file(
 )
 
 # Generate the 'config.h' file (from its .in.h template).
+set(ASSUMED_CACHE_LINE_SIZE 64)
+
 check_type_size("AO_t" SIZEOF_AO_T)
 check_type_size("off_t" SIZEOF_OFF_T)
 check_type_size("size_t" SIZEOF_SIZE_T)

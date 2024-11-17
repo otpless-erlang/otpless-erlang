@@ -13,7 +13,7 @@
 #undef AC_APPLE_UNIVERSAL_BUILD
 
 /* Assumed cache-line size (in bytes) */
-#undef ASSUMED_CACHE_LINE_SIZE
+#cmakedefine ASSUMED_CACHE_LINE_SIZE @ASSUMED_CACHE_LINE_SIZE@
 
 /* Define the brk() argument type. */
 #undef BRK_ARG_TYPE
