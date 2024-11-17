@@ -287,11 +287,98 @@ target_include_directories(erts_internal PRIVATE
   ${CMAKE_SOURCE_DIR}/erts/include/internal
 )
 
+# # Define the 'libethread' target that compiles the libethread library.
+# set(LIBETHREAD_SRC
+#   ${CMAKE_SOURCE_DIR}/erts/lib_src/common/ethr_aux.c
+#   ${CMAKE_SOURCE_DIR}/erts/lib_src/common/ethr_atomics.c
+#   ${CMAKE_SOURCE_DIR}/erts/lib_src/common/ethr_mutex.c
+#   ${CMAKE_SOURCE_DIR}/erts/lib_src/common/ethr_cbf.c
+#   # erts/lib_src/pthread/ethread.c
+#   # erts/lib_src/pthread/ethr_event.c
+# )
+# if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+#   list(APPEND LIBETHREAD_SRC
+#     ${CMAKE_SOURCE_DIR}/erts/lib_src/win/ethread.c
+#     ${CMAKE_SOURCE_DIR}/erts/lib_src/win/ethr_event.c
+#   )
+# else()
+#   list(APPEND LIBETHREAD_SRC
+#     ${CMAKE_SOURCE_DIR}/erts/lib_src/pthread/ethread.c
+#     ${CMAKE_SOURCE_DIR}/erts/lib_src/pthread/ethr_event.c
+#     # See about this:
+#     # ifeq ($(ETHR_X86_SSE2_ASM),yes)
+#     # ETHREAD_LIB_SRC += pthread/ethr_x86_sse2_asm.c
+#     # endif
+#   )
+# endif()
+
+# add_library(ethread STATIC ${LIBETHREAD_SRC})
+# target_compile_definitions(ethread PRIVATE HAVE_CONFIG_H)
+# target_include_directories(ethread PRIVATE
+#   ${CMAKE_BINARY_DIR}/erts/
+#   ${CMAKE_BINARY_DIR}/erts/include/
+#   ${CMAKE_SOURCE_DIR}/erts/include/internal
+# )
+
+
+# target_include_directories(ethread PRIVATE
+#   erts/include/
+#   erts/include/internal/
+#   erts/x86_64-pc-linux-gnu/
+#   erts/include/x86_64-pc-linux-gnu/
+#   erts/include/internal/x86_64-pc-linux-gnu/
+# )
+
 # Define the 'ryu' target that produces libryu.a library.
 set(LIBRYU_SRC
   erts/emulator/ryu/d2s.c
 )
 add_library(ryu STATIC ${LIBRYU_SRC})
+
+# Define the 'pcre' target (and 'pcre_generate_include' target) that produces
+# the liberts.a library.
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/erts/emulator/pcre)
+
+set(PCRE_GENERATE_INCLUDE_ARGS
+  -i ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_exec.c
+  -o ${CMAKE_BINARY_DIR}/erts/emulator/pcre/pcre_exec_loop_break_cases.inc
+)
+add_custom_command(
+  OUTPUT pcre_generate_include.txt
+  COMMAND ${PERL_EXECUTABLE} erts/emulator/pcre/generate_include.pl ${PCRE_GENERATE_INCLUDE_ARGS}
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_custom_target(pcre_generate_include ALL DEPENDS pcre_generate_include.txt)
+
+set(LIBEPCRE_SRC
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_latin_1_table.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_compile.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_config.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_dfa_exec.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_exec.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_fullinfo.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_get.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_globals.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_maketables.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_newline.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_ord2utf8.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_refcount.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_study.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_tables.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_valid_utf8.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_version.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_byte_order.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_jit_compile.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_string_utils.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_ucd.c
+  ${CMAKE_SOURCE_DIR}/erts/emulator/pcre/pcre_xclass.c
+)
+add_library(pcre STATIC ${LIBEPCRE_SRC})
+add_dependencies(pcre pcre_generate_include)
+target_compile_definitions(pcre PRIVATE ERLANG_INTEGRATION)
+target_include_directories(pcre PRIVATE
+  ${CMAKE_BINARY_DIR}/erts/emulator/pcre
+)
 
 add_library(erlang SHARED main.c)
 set_target_properties(erlang PROPERTIES VERSION ${PROJECT_VERSION})
