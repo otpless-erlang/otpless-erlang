@@ -16,7 +16,6 @@ project(
 find_package(Perl REQUIRED)
 
 # Print out some CMake variables for debugging/development purposes.
-
 message(STATUS "CMAKE_CROSSCOMPILING = ${CMAKE_CROSSCOMPILING}")
 message(STATUS "CMAKE_CROSSCOMPILING_EMULATOR = ${CMAKE_CROSSCOMPILING_EMULATOR}")
 
@@ -111,21 +110,9 @@ else()
   message(FATAL_ERROR "The target architecture could not be determined")
 endif()
 
-# Generate the 'erl_int_sizes_config.h' file (from its .h.in template).
-check_type_size("char" SIZEOF_CHAR)
-check_type_size("short" SIZEOF_SHORT)
-check_type_size("int" SIZEOF_INT)
-check_type_size("long" SIZEOF_LONG)
-check_type_size("long long" SIZEOF_LONG_LONG)
-check_type_size("void*" SIZEOF_VOID_P)
-
-configure_file(
-  ${CMAKE_SOURCE_DIR}/erts/include/erl_int_sizes_config.h.in
-  ${CMAKE_BINARY_DIR}/erts/include/erl_int_sizes_config.h
-)
-
 # Generate the 'config.h' file (from its .in.h template).
 set(ASSUMED_CACHE_LINE_SIZE 64)
+
 if(CMAKE_C_BYTE_ORDER MATCHES BIG_ENDIAN)
   message(STATUS "Erlang will be compiled for a big endian system")
   set(ERTS_ENDIANNESS 1)
@@ -136,6 +123,13 @@ else()
   message(FATAL_ERROR "The endianess could not be determined")
   set(ERTS_ENDIANNESS 0)
 endif()
+
+check_type_size("char" SIZEOF_CHAR)
+check_type_size("short" SIZEOF_SHORT)
+check_type_size("int" SIZEOF_INT)
+check_type_size("long" SIZEOF_LONG)
+check_type_size("long long" SIZEOF_LONG_LONG)
+check_type_size("void*" SIZEOF_VOID_P)
 
 check_type_size("AO_t" SIZEOF_AO_T)
 check_type_size("off_t" SIZEOF_OFF_T)
@@ -219,6 +213,12 @@ check_include_file(ws2tcpip.h HAVE_WS2TCPIP_H)
 configure_file(
   ${CMAKE_SOURCE_DIR}/erts/config.h.in
   ${CMAKE_BINARY_DIR}/erts/config.h
+)
+
+# Generate the 'erl_int_sizes_config.h' file (from its .h.in template).
+configure_file(
+  ${CMAKE_SOURCE_DIR}/erts/include/erl_int_sizes_config.h.in
+  ${CMAKE_BINARY_DIR}/erts/include/erl_int_sizes_config.h
 )
 
 # Define the 'beam_makeops' target which invokes the 'beam_makeops' Perl script
