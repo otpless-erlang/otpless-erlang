@@ -11,6 +11,12 @@ project(
   LANGUAGES C
 )
 
+find_package(Threads REQUIRED)
+message(STATUS "Threads_FOUND: ${Threads_FOUND}")
+message(STATUS "CMAKE_THREAD_LIBS_INIT: ${CMAKE_THREAD_LIBS_INIT}")
+message(STATUS "CMAKE_USE_WIN32_THREADS_INIT: ${CMAKE_USE_WIN32_THREADS_INIT}")
+message(STATUS "CMAKE_USE_PTHREADS_INIT: ${CMAKE_USE_PTHREADS_INIT}")
+
 # Find the Perl interpreter (the build process generates some C source files
 # using Perl scripts).
 find_package(Perl REQUIRED)

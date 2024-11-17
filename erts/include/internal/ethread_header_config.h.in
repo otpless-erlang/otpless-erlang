@@ -19,22 +19,22 @@
  */
 
 /* Define to the size of pointers */
-#undef ETHR_SIZEOF_PTR
+#cmakedefine ETHR_SIZEOF_PTR @ETHR_SIZEOF_PTR@
 
 /* Define to the size of int */
-#undef ETHR_SIZEOF_INT
+#cmakedefine ETHR_SIZEOF_INT @ETHR_SIZEOF_INT@
 
 /* Define to the size of long */
-#undef ETHR_SIZEOF_LONG
+#cmakedefine ETHR_SIZEOF_LONG @ETHR_SIZEOF_LONG@
 
 /* Define to the size of long long */
-#undef ETHR_SIZEOF_LONG_LONG
+#cmakedefine ETHR_SIZEOF_LONG_LONG @ETHR_SIZEOF_LONG_LONG@
 
 /* Define to the size of __int64 */
-#undef ETHR_SIZEOF___INT64
+#cmakedefine ETHR_SIZEOF___INT64 @ETHR_SIZEOF___INT64@
 
 /* Define to the size of __int128_t */
-#undef ETHR_SIZEOF___INT128_T
+#cmakedefine ETHR_SIZEOF___INT128_T @ETHR_SIZEOF___INT128_T@
 
 /* Define if bigendian */
 #undef ETHR_BIGENDIAN
@@ -43,10 +43,10 @@
 #undef ETHR_DISABLE_NATIVE_IMPLS
 
 /* Define if you have win32 threads */
-#undef ETHR_WIN32_THREADS
+#cmakedefine ETHR_WIN32_THREADS @ETHR_WIN32_THREADS@
 
 /* Define if you have pthreads */
-#undef ETHR_PTHREADS
+#cmakedefine ETHR_PTHREADS @ETHR_PTHREADS@
 
 /* Define if you need the <nptl/pthread.h> header file. */
 #undef ETHR_NEED_NPTL_PTHREAD_H
