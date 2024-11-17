@@ -126,6 +126,16 @@ configure_file(
 
 # Generate the 'config.h' file (from its .in.h template).
 set(ASSUMED_CACHE_LINE_SIZE 64)
+if(CMAKE_C_BYTE_ORDER MATCHES BIG_ENDIAN)
+  message(STATUS "Erlang will be compiled for a big endian system")
+  set(ERTS_ENDIANNESS 1)
+elseif(CMAKE_C_BYTE_ORDER MATCHES LITTLE_ENDIAN)
+  message(STATUS "Erlang will be compiled for a little endian system")
+  set(ERTS_ENDIANNESS -1)
+else()
+  message(FATAL_ERROR "The endianess could not be determined")
+  set(ERTS_ENDIANNESS 0)
+endif()
 
 check_type_size("AO_t" SIZEOF_AO_T)
 check_type_size("off_t" SIZEOF_OFF_T)
