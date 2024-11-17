@@ -1306,22 +1306,22 @@
 #undef SIZEOF_AO_T
 
 /* The size of 'char', as computed by sizeof. */
-#undef SIZEOF_CHAR
+#cmakedefine SIZEOF_CHAR @SIZEOF_CHAR@
 
 /* The size of 'int', as computed by sizeof. */
-#undef SIZEOF_INT
+#cmakedefine SIZEOF_INT @SIZEOF_INT@
 
 /* The size of 'long', as computed by sizeof. */
-#undef SIZEOF_LONG
+#cmakedefine SIZEOF_LONG @SIZEOF_LONG@
 
 /* The size of 'long long', as computed by sizeof. */
-#undef SIZEOF_LONG_LONG
+#cmakedefine SIZEOF_LONG_LONG @SIZEOF_LONG_LONG@
 
 /* The size of 'off_t', as computed by sizeof. */
 #undef SIZEOF_OFF_T
 
 /* The size of 'short', as computed by sizeof. */
-#undef SIZEOF_SHORT
+#cmakedefine SIZEOF_SHORT @SIZEOF_SHORT@
 
 /* The size of 'size_t', as computed by sizeof. */
 #undef SIZEOF_SIZE_T
@@ -1333,7 +1333,7 @@
 #undef SIZEOF_TIME_T
 
 /* The size of 'void *', as computed by sizeof. */
-#undef SIZEOF_VOID_P
+#cmakedefine SIZEOF_VOID_P @SIZEOF_VOID_P@
 
 /* The size of '_Float16', as computed by sizeof. */
 #undef SIZEOF__FLOAT16
