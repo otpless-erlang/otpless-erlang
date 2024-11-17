@@ -125,6 +125,15 @@ configure_file(
 )
 
 # Generate the 'config.h' file (from its .in.h template).
+check_type_size("AO_t" SIZEOF_AO_T)
+check_type_size("off_t" SIZEOF_OFF_T)
+check_type_size("size_t" SIZEOF_SIZE_T)
+check_type_size("suseconds_t" SIZEOF_SUSECONDS_T)
+check_type_size("time_t" SIZEOF_TIME_T)
+check_type_size("_Float16" SIZEOF__FLOAT16)
+check_type_size("__int128_t" SIZEOF___INT128_T)
+check_type_size("__int64" SIZEOF___INT64)
+
 check_include_file(pthread.h ETHR_HAVE_PTHREAD_H)
 check_include_file(sched.h ETHR_HAVE_SCHED_H)
 check_include_file(sys/time.h ETHR_HAVE_SYS_TIME_H)

@@ -1303,7 +1303,7 @@
 #undef SHCOPY
 
 /* The size of 'AO_t', as computed by sizeof. */
-#undef SIZEOF_AO_T
+#cmakedefine SIZEOF_AO_T @SIZEOF_AO_T@
 
 /* The size of 'char', as computed by sizeof. */
 #cmakedefine SIZEOF_CHAR @SIZEOF_CHAR@
@@ -1318,31 +1318,31 @@
 #cmakedefine SIZEOF_LONG_LONG @SIZEOF_LONG_LONG@
 
 /* The size of 'off_t', as computed by sizeof. */
-#undef SIZEOF_OFF_T
+#cmakedefine SIZEOF_OFF_T @SIZEOF_OFF_T@
 
 /* The size of 'short', as computed by sizeof. */
 #cmakedefine SIZEOF_SHORT @SIZEOF_SHORT@
 
 /* The size of 'size_t', as computed by sizeof. */
-#undef SIZEOF_SIZE_T
+#cmakedefine SIZEOF_SIZE_T @SIZEOF_SIZE_T@
 
 /* The size of 'suseconds_t', as computed by sizeof. */
-#undef SIZEOF_SUSECONDS_T
+#cmakedefine SIZEOF_SUSECONDS_T @SIZEOF_SUSECONDS_T@
 
 /* The size of 'time_t', as computed by sizeof. */
-#undef SIZEOF_TIME_T
+#cmakedefine SIZEOF_TIME_T @SIZEOF_TIME_T@
 
 /* The size of 'void *', as computed by sizeof. */
 #cmakedefine SIZEOF_VOID_P @SIZEOF_VOID_P@
 
 /* The size of '_Float16', as computed by sizeof. */
-#undef SIZEOF__FLOAT16
+#cmakedefine SIZEOF__FLOAT16 @SIZEOF__FLOAT16@
 
 /* The size of '__int128_t', as computed by sizeof. */
-#undef SIZEOF___INT128_T
+#cmakedefine SIZEOF___INT128_T @SIZEOF___INT128_T@
 
 /* The size of '__int64', as computed by sizeof. */
-#undef SIZEOF___INT64
+#cmakedefine SIZEOF___INT64 @SIZEOF___INT64@
 
 /* Define to 1 if all of the C89 standard headers exist (not just the ones
    required in a freestanding environment). This macro is provided for
